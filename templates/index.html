@@ -1,36 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Zero LLM</title>
+    <meta charset="UTF-8">
+    <title>Minha LLM</title>
     <style>
-        body { background: #0e1117; color: white; font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; }
-        .chat { width: 400px; background: #161b22; padding: 20px; border-radius: 10px; border: 1px solid #30363d; }
-        #output { height: 300px; overflow-y: auto; border-bottom: 1px solid #30363d; margin-bottom: 10px; padding: 10px; }
-        input { width: 70%; background: #0d1117; color: white; border: 1px solid #30363d; padding: 10px; border-radius: 5px; }
-        button { padding: 10px; background: #238636; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        body { background: #0b0d11; color: #fff; font-family: 'Courier New', monospace; padding: 50px; text-align: center; }
+        .box { background: #1a1d23; border: 1px solid #00ff95; padding: 20px; border-radius: 10px; max-width: 500px; margin: auto; }
+        #log { height: 200px; overflow-y: auto; text-align: left; background: #000; padding: 10px; margin-bottom: 20px; color: #00ff95; border-radius: 5px; }
+        input { width: 70%; padding: 10px; background: #222; border: 1px solid #444; color: #fff; }
+        button { padding: 10px; background: #00ff95; border: none; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="chat">
-        <div id="output"><b>IA:</b> Olá! Treinado com seu TXT.</div>
-        <input type="text" id="msg" placeholder="Digite o início...">
-        <button onclick="send()">Gerar</button>
+    <div class="box">
+        <h3>NEURAL NETWORK V3</h3>
+        <div id="log">Aguardando comando...</div>
+        <input type="text" id="in" placeholder="Escreva algo...">
+        <button onclick="falar()">ENVIAR</button>
     </div>
-
     <script>
-        async function send() {
-            const input = document.getElementById('msg');
-            const out = document.getElementById('output');
-            const res = await fetch('/ask', {
+        async function falar() {
+            const i = document.getElementById('in');
+            const l = document.getElementById('log');
+            l.innerHTML += `<br><b>Você:</b> ${i.value}`;
+            const r = await fetch('/ask', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({msg: input.value})
+                body: JSON.stringify({msg: i.value})
             });
-            const data = await res.json();
-            out.innerHTML += `<p><b>Você:</b> ${input.value}</p>`;
-            out.innerHTML += `<p><b>IA:</b> ${data.answer}</p>`;
-            input.value = '';
+            const d = await r.json();
+            l.innerHTML += `<br><b>IA:</b> ${d.answer}`;
+            i.value = '';
+            l.scrollTop = l.scrollHeight;
         }
     </script>
 </body>
-</html>
+</html
